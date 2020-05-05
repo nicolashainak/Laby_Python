@@ -11,8 +11,14 @@ dependencies:
 - pip
 - matplotlib
 - ipywidgets
-- os
-- IPython.display
-- re
+-taits.api
+-traitlets
+-re
+-os
+-functool
+-threading
+-copy
+-enum
+-math
 - pip:
      - .
