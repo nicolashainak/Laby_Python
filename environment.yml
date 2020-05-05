@@ -1,0 +1,18 @@
+# Software dependencies
+name: laby-jupyter
+
+channels:
+- conda-forge
+
+dependencies:
+- notebook
+- xeus-cling
+- xwidgets
+- pip
+- matplotlib
+- ipywidgets
+- os
+- IPython.display
+- re
+- pip:
+     - .
