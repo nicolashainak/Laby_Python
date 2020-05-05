@@ -105,6 +105,6 @@ dependencies:
   - zipp=3.1.0=py_0
   - zlib=1.2.11=h516909a_1006
   - pip:
-    - laby==0.0.1
+    
 
      - .
