@@ -11,14 +11,14 @@ dependencies:
 - pip
 - matplotlib
 - ipywidgets
--taits.api
--traitlets
--re
--os
--functool
--threading
--copy
--enum
--math
-- pip:
+- taits.api
+- traitlets
+- re
+- os
+- functool
+- threading
+- copy
+- enum
+- math
+pip:
      - .
