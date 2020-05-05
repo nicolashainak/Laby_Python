@@ -30,7 +30,7 @@ def debut():
     
 def avance():
     player.avance()
-    print("avance")
+    
     
     
 def droite():

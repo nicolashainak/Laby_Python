@@ -179,7 +179,8 @@ class labyrinth:
             self.message = "je ne peux pas avancer."
             return False
         self.message = ""
-        print("j'avance dans avance ")
+        
+        
         self.position = self.devant()
         return True
     
@@ -330,7 +331,7 @@ def LabyrinthView(laby):
             file = open (image,'rb')
             image_lu = file.read()
             items.append(widgets.Image(value = image_lu, format='png', layout=widgets.Layout(display="flex",
-            margin="1" ,padding="0", width="50%"
+             width="32",height="32",padding="0px",margin="0px"
             )))
     return (items,taille_ligne)
     
