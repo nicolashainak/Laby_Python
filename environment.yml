@@ -74,7 +74,7 @@ dependencies:
   - pugixml=1.10=he1b5a44_1
   - pygments=2.6.1=py_0
   - pylint=2.4.4=py38_0
-  - pyrsistent=0.16.0=py38h1e0a361_0
+  - pyrsistent=0.16.0=py38h  1e0a361_0
   - python=3.8.2=h8356626_5_cpython
   - python-dateutil=2.8.1=py_0
   - python_abi=3.8=1_cp38
@@ -107,4 +107,4 @@ dependencies:
   - pip:
     
 
-     - .
+    

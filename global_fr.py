@@ -18,7 +18,7 @@ def Laby(s):
     global view
     global player
     laby = labyrinth(s)
-    view = View(copy(laby))
+    view = View(deepcopy(laby))
     player=ValuePlayerWidget(view)
     return player
 
@@ -35,8 +35,6 @@ def avance():
     
 def droite():
     player.droite()
-    
-
     
 def gauche():
     player.gauche()

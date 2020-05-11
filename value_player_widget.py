@@ -19,7 +19,7 @@ class Player(HasTraits) :
         
         def update(self):
             self.slider_time.value=self.time
-            self.view.value= self.history[self.time]
+            self.view.value = self.history[self.time]
             self.view.update()
             
 
@@ -45,7 +45,7 @@ class Player(HasTraits) :
         
         def reset(self,value):      
                 self.time=0
-                self.history=[copy(value)]
+                self.history=[(value)]
                 self.slider_time.max=len(self.history)-1
                 self.update()
         
@@ -94,12 +94,12 @@ class Player(HasTraits) :
 
         def __init__(self, _view):
             self.view = _view
-            self.original_value=copy(self.view.value)
+            self.original_value=deepcopy(self.view.value)
             self.play_direction=PlayDirection.Forward
             self.play_fps=1
             
             self.timer =PerpetualTimer( self.play_fps,self.tick )
-            self.history=[copy(self.view.value)]
+            self.history=[(self.view.value)]
             self.time=0
            
             
@@ -111,7 +111,7 @@ class Player(HasTraits) :
                 step=1,
                 description="time:"
             )
-            self.reset(copy(self.original_value))
+            self.reset(deepcopy(self.original_value))
                 
             
             def on_value_change(change):
@@ -140,41 +140,46 @@ class PlayerView(VBox):
 
     
     def avance(self):
-        self.player.view.value.avance()
-        mycopy = copy(self.player.view.value)
+        mycopy = deepcopy(self.player.history[len(self.player.history)-1])
+        mycopy.avance()
         self.set_value(mycopy)
         
         
     def droite(self):
-        self.player.view.value.droite()
-        mycopy = copy(self.player.view.value)
+        mycopy = deepcopy(self.player.history[len(self.player.history)-1])
+        mycopy.droite()
         self.set_value(mycopy)
         
 
         
     def gauche(self):
-        self.player.view.value.gauche()
-        mycopy = copy(self.player.view.value)
+        mycopy = deepcopy(self.player.history[len(self.player.history)-1])
+        mycopy.gauche()
         self.set_value(mycopy)
+
     def pose(self):
-        self.player.view.value.pose()
-        mycopy = copy(self.player.view.value)
+        mycopy = deepcopy(self.player.history[len(self.player.history)-1])
+        mycopy.pose()
         self.set_value(mycopy)      
+
     def prend(self):
-        self.player.view.value.prend()
-        mycopy = copy(self.player.view.value)
+        mycopy = deepcopy(self.player.history[len(self.player.history)-1])
+        mycopy.prend()
         self.set_value(mycopy)
+
     def ouvre(self):
-        self.player.view.value.ouvre()
-        mycopy = copy(self.player.view.value)
+        mycopy = deepcopy(self.player.history[len(self.player.history)-1])
+        mycopy.ouvre()
         self.set_value(mycopy)
+
     def regarde(self):
-        self.player.view.value.regarde()
-        mycopy = copy(self.player.view.value)
+        mycopy = deepcopy(self.player.history[len(self.player.history)-1])
+        mycopy.regarde()
         self.set_value(mycopy)
+        
     def win(self):
-        self.player.view.value.win()
-        mycopy = copy(self.player.view.value)
+        mycopy = deepcopy(self.player.history[len(self.player.history)-1])
+        mycopy.win()
         self.set_value(mycopy)
     
     def __init__(self,player):
@@ -223,9 +228,8 @@ class PlayerView(VBox):
         # step=1,
         #     description="time:"
         # )
-
         
-
+        
         slider=ipywidgets.FloatSlider(
         value=1.0,
         min=0.0,
@@ -256,14 +260,23 @@ class PlayerView(VBox):
         step_forward.on_click(step_forward_clicked)
         fast_forward.on_click(fast_forward_clicked)
 
-        self.affichage=ipywidgets.HBox([fast_backward,backward,step_backward,pause,step_forward,play,fast_forward,self.player.slider_time,slider])
-        VBox.__init__(self,[self.player.view,self.affichage])
+        
         #link((self.slider_time,'value'),(self.player,'time'))
-
+        self.opla=0
         #self.widget_affichage=VBox([self.player.view,self.slider_time,self.affichage])
         #self.player.time=0
         self.player=player
-        self.player.reset(copy(self.player.view.value))
+        self.player.reset(self.player.view.value)
+        def fctOut(slid_time):
+            self.opla=self.opla+1
+            print(self.player.history[slid_time].message)
+            print("caca")
+            print(self.opla)
+        out=widgets.interactive_output(fctOut,{"slid_time" :self.player.slider_time})
+        
+        self.affichage=ipywidgets.HBox([fast_backward,backward,step_backward,pause,step_forward,play,fast_forward,self.player.slider_time,slider])
+        VBox.__init__(self,[self.player.view,self.affichage,out])
+        
 
 class View (GridBox):
     
@@ -273,10 +286,10 @@ class View (GridBox):
 
         self.taille_ligne= len(value.board.plateau[0])
         self.value=value 
-        
+        self.items=[]
         GridBox.__init__(self)
         self.layout=ipywidgets.Layout(grid_template_columns="repeat("+str(self.taille_ligne)+", 50px)")
-        self.update()
+        self.create()
 
 
         #def on_value_change(change):
@@ -286,32 +299,10 @@ class View (GridBox):
     def set_value(self,value):
         self.value=value
 
-    # def update(self):
-    #     laby=self.value
-    #     carte = laby.board.plateau
-    #     for j in range (0,len(carte)):
-            
-    #         for i in range (0,len(carte[0])):
-    #             if(j==laby.position.i and i==laby.position.j):
-    #                 tuile= laby.dirToAnt()
-    #             else:
-    #                 tuile = laby.board.get(position(j,i))
-    #             self.children[i*self.taille_ligne+j]=tuile
-    #             # pof = tuile.name
-    #             # image = "include/laby/tiles_png/" + pof + ".png"
-    #             # file = open (image,'rb')
-    #             # image_lu = file.read()
-    #             # items.append(widgets.Image(value = image_lu, format='png', layout=widgets.Layout(display="flex",
-    #             # margin="1" ,padding="0", width="50%"
-    #             # )))
-        
-        
-        
-        
     def update(self):
+        
         laby=self.value
         carte = laby.board.plateau
-        items=[]
         for j in range (0,len(carte)):
             
             for i in range (0,len(carte[0])):
@@ -319,7 +310,11 @@ class View (GridBox):
                     tuile= laby.dirToAnt()
                 else:
                     tuile = laby.board.get(position(j,i))
-                items.append(Tiles.tile2Png[tuile])
+                
+                
+                self.items[j*self.taille_ligne+i].value=self.toImg(tuile).value
+                
+                #print(j*self.taille_ligne+i)
                 # pof = tuile.name
                 # image = "include/laby/tiles_png/" + pof + ".png"
                 # file = open (image,'rb')
@@ -327,7 +322,39 @@ class View (GridBox):
                 # items.append(widgets.Image(value = image_lu, format='png', layout=widgets.Layout(display="flex",
                 # margin="1" ,padding="0", width="50%"
                 # )))
-        self.children=items
+        
+        
+    def toImg(self,tuile):
+        pof = tuile.name
+        image = "include/laby/tiles_png/" + pof + ".png"
+        file = open (image,'rb')
+        image_lu = file.read()
+        img=(widgets.Image(value = image_lu, format='png', layout=widgets.Layout(display="flex",
+        margin="1" ,padding="0", width="50%"
+        )))
+        return img
+
+    def create(self):
+        laby=self.value
+        carte = laby.board.plateau
+        
+        for j in range (0,len(carte)):
+            
+            for i in range (0,len(carte[0])):
+                if(j==laby.position.i and i==laby.position.j):
+                    tuile= laby.dirToAnt()
+                else:
+                    tuile = laby.board.get(position(j,i))
+                
+                self.items.append(self.toImg(tuile))
+                # pof = tuile.name
+                # image = "include/laby/tiles_png/" + pof + ".png"
+                # file = open (image,'rb')
+                # image_lu = file.read()
+                # items.append(widgets.Image(value = image_lu, format='png', layout=widgets.Layout(display="flex",
+                # margin="1" ,padding="0", width="50%"
+                # )))
+        self.children=self.items
 
 #def view (herite gridbox avec methode update qui emt a jour la vu )
 def ValuePlayerWidget(visualisation):

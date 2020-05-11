@@ -196,7 +196,7 @@ class labyrinth:
                 or self.regarde()==Tiles.SmallWeb or self.regarde()==Tiles.SmallRock  )):
             self.carry=Tiles.Void
             self.board.set(self.devant(),Tiles.Rock)
-            self.message=""
+            self.message="J'ai posé ce que je portais"
             return True
         self.message="Je ne peux pas poser."
         return False
@@ -226,7 +226,7 @@ class labyrinth:
         if (self.carry==Tiles.Void and self.regarde()==Tiles.Rock):
             self.carry=Tiles.Rock
             self.board.set(self.devant(),Tiles.Void)
-            self.message=""
+            self.message="Je porte un objet"
             return True
         self.message = "Je ne peux pas prendre."
         return False
@@ -313,27 +313,6 @@ for t in Tiles.__dict__.keys() :
 
 
 
-def LabyrinthView(laby):
-    carte = laby.board.plateau
-    items=[]
-    taille_ligne =0
-    
-    for j in range (0,len(carte)):
-        taille_ligne = len(carte[0])
-        for i in range (0,len(carte[0])):
-            if(j==laby.position.i and i==laby.position.j):
-                tuile= laby.dirToAnt()
-            else:
-                tuile = laby.board.get(position(j,i))
-            
-            pof = tuile.name
-            image = "include/laby/tiles_png/" + pof + ".png"
-            file = open (image,'rb')
-            image_lu = file.read()
-            items.append(widgets.Image(value = image_lu, format='png', layout=widgets.Layout(display="flex",
-             width="32",height="32",padding="0px",margin="0px"
-            )))
-    return (items,taille_ligne)
     
 
 #<<-- l = valeur de l'historique
