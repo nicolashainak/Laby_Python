@@ -3,21 +3,15 @@ from functools import partial
 from collections import namedtuple
 import re
 from collections import namedtuple
-# import matplotlib.image as mpimg
-# import matplotlib.pyplot as plt
-# from PIL import Image 
 import ipywidgets as widgets
 import os
 import math
 from IPython.display import display
 from ipywidgets import HBox, VBox
-# import PIL
-# import numpy as np
-# import re
 from IPython.display import Image
-# from IPython.display import display
 import random
 
+#Class position 
 class position :
     def __init__(self,i=0,j=0):
         self.i=i
@@ -30,78 +24,81 @@ class position :
       
     
 
-PlayDirection = Enum('PlayDirection','Forward Backward None')
+
+#class direction qui permet facielemtn de faire tourner la fourmi
 direction = { "0":[-1,0], # North  
                "1":[0,1], #East
                "2":[1,0],  #South
                "3":[0,-1]}  #Weast
-class dimension(position):
-    def __init__(self,i=0,j=0):
-        position.__init__(self,i,j) 
-        
 
+        
+#class board 
+#définit le tableau de jeu, est un tableau de tuile
 class  Board: 
+    
+    #constructeur
     def __init__(self,niveau):
         self.plateau=niveau
-    def copy(self):
-        return self
+    
+    #getter 
     def get(self,position):
         if (position.i<0 or position.j<0 or position.i >= len(self.plateau)or position.j>=len(self.plateau[0])):
             return Tiles.Outside
         else:
             return self.plateau[position.i][position.j] 
     
+    #setter
     def set(self,position,tuile):
         if (position.i<0 or position.j<0 or position.i >= len(self.plateau)or position.j>=len(self.plateau[0])):
              print('erreur !!')   
         self.plateau[position.i][position.j]=tuile       
 
+#remplis un tableau avec le board, la direction de la fourmi et sa position
 def charger(nom_niveau):
     fichier = open(nom_niveau, 'r+')
     tab = []
     i=0
     j=0
     stockI=-1
-
-
     stockJ=-1
     dire=0
     for line in fichier:
-        
         j=0
         bleau=[]
         if (len(line)>0 and (line[0] == "o" or line[0] =="." or line[0] =="x")):
             x = line.split()
-            for nimportequoi in x: 
-                if (nimportequoi=="←"):
+            for tuiles in x: 
+                if (tuiles=="←"):
                     stockI=i
                     stockJ=j
                     dire="3"
-                    nimportequoi="."
-                if (nimportequoi=="↓"):
+                    tuiles="."
+                if (tuiles=="↓"):
                     stockI=i
                     stockJ=j
                     dire="2"
-                    nimportequoi="."
-                if (nimportequoi=="↑"): 
+                    tuiles="."
+                if (tuiles=="↑"): 
                     stockI=i
                     stockJ=j
                     dire="0"
-                    nimportequoi="."
-                if (nimportequoi =="→"):
+                    tuiles="."
+                if (tuiles =="→"):
                     stockI=i
                     stockJ=j
                     dire="1"
-                    nimportequoi="."
-                bleau.append(Tiles.char2Tile[nimportequoi])
+                    tuiles="."
+                bleau.append(Tiles.char2Tile[tuiles])
                 j+=1
             tab.append(bleau)
             i+=1
     return [tab,stockI,stockJ,dire]
 
+#class Labyrinthe
+#prend en paramètre notre string 
 class labyrinth:
-    ## a rajouter from string // to string // html 
     
+    #constructeur
     def __init__(self,s):
         
         self._won = False
@@ -113,18 +110,16 @@ class labyrinth:
         self.position = position(self.temp[1],self.temp[2])
         self.message = ""
 
-    def copy(self):
-        return self
-
+    #initialise notre vue a partir du board
     def view(self):
         view = self.board
         size=self.size()
         if ( self.position.i < size[0] and
              self.position.j < size[1] ):
-            # The ant is on the board; display it
             view.plateau[self.position.i][self.position.j] = self.dirToAnt()
         return view
     
+    #les 3 méthodes suivantes non pas été implémenter mais pourrait l'être pour un programme plus complet
     def to_string(self):
         pass
 
@@ -134,7 +129,7 @@ class labyrinth:
         pass    
 
 
-
+    #Reset totalement notre labyrinthe a sa valeur initiale
     def reset(self): 
         self._won = False
         self.carry = Tiles.Void
@@ -144,6 +139,7 @@ class labyrinth:
         self.position = position(self.temp[1],self.temp[2])
         self.message = ""
 
+    #renvoi la direction de notre fourmi
     def dirToAnt(self):
         if self.direction =="0":
             return Tiles.Ant_N
@@ -154,23 +150,27 @@ class labyrinth:
         elif self.direction =="3":
             return Tiles.Ant_W     
         
+    #renvoi la taille du tableau
     def size(self):
         return (len(self.board.plateau),len(self.board.plateau[0]))
     
+    #retourne la position de la case devant la fourmi
     def devant(self):
         return position(self.position.i+int(direction[self.direction][0]),self.position.j+int(direction[self.direction][1]))
         
-    
+    #tourne notre fourmi à gauche
     def gauche(self):
         self.direction = str((int(self.direction)-1)%4)
         self.message = ""
         return True
     
+    #tourne notre fourmi à droite
     def droite(self):
         self.direction = str((int(self.direction)+1)%4)
         self.message = ""
         return True
     
+    #fait avancer notre fourmi
     def avance(self):
         tile=self.board.get(self.position)
         tile_devant=self.board.get(self.devant())
@@ -179,11 +179,10 @@ class labyrinth:
             self.message = "je ne peux pas avancer."
             return False
         self.message = ""
-        
-        
         self.position = self.devant()
         return True
     
+    #indique si l'on a gagné
     def win(self):
         self._won=True
         self.message="J'ai gagné !"
@@ -191,6 +190,7 @@ class labyrinth:
     def won(self):
         return self._won
     
+    #Permet a notre fourmi de poser le caillou qu'elle porte
     def pose(self):
         if (self.carry==Tiles.Rock and (self.regarde()==Tiles.Void or self.regarde()==Tiles.Web 
                 or self.regarde()==Tiles.SmallWeb or self.regarde()==Tiles.SmallRock  )):
@@ -201,16 +201,19 @@ class labyrinth:
         self.message="Je ne peux pas poser."
         return False
     
+    #renvoi la tuile situé devant la fourmi
     def regarde(self):
         self.message=""
         return self.board.get(self.devant())
     
+    #getter de psoition
     def get(self,pos):
         if ( pos == self.position ):
             return self.dirToAnt()
         else:
             return self.board.get(pos)
     
+    #Ouvre la porte si la fourmi est devant
     def ouvre(self):
         if self.regarde()!= Tiles.Exit :
             self.message = "Je ne peux pas ouvrir."
@@ -222,6 +225,7 @@ class labyrinth:
         self.win()
         return True
     
+    #La fourmi va porter le caillou devant elel si il y en a un
     def prend(self):
         if (self.carry==Tiles.Void and self.regarde()==Tiles.Rock):
             self.carry=Tiles.Rock
@@ -230,7 +234,8 @@ class labyrinth:
             return True
         self.message = "Je ne peux pas prendre."
         return False
-     
+
+    #Permet de palcer aléatoirement les cailloux sur certaine carte qui le demandent 
     def randomize(self):
         n_random_rocks=0
         n_random_webs=0
@@ -266,8 +271,10 @@ class labyrinth:
                
             nRow=nRow+1  
 
+#tuple de nos tuiles
 Tile= namedtuple("Tile",["name","char"])
 
+#class Tules représentant toutes nos tuiles psosible
 class Tiles():
         Ant_E=Tile(name="ant-e",char="→")
         Ant_N=Tile(name="ant-n",char="↑")
@@ -276,7 +283,7 @@ class Tiles():
         Exit=Tile(name="exit",char="x")
         SmallRock=Tile(name="nrock",char="ŕ")
         SmallWeb=Tile(name="nweb",char="ẃ")
-        Rock=Tile(name="rock",char="r")
+        Rock=Tile(name="rock",char="r")##declare ton appli 
         Void=Tile(name="void",char=".")
         Wall=Tile(name="wall",char="o")
         Web=Tile(name="web",char="w")
@@ -285,7 +292,7 @@ class Tiles():
         RandomWeb=Tile(name="void",char="W")
         
        
-        
+     #création de nos dictionnaires utiles par la suite   
 Tiles.tile2Png=dict()        
 Tiles.char2N=dict()
 Tiles.char2Tile=dict()
@@ -295,8 +302,8 @@ for t in Tiles.__dict__.values():
         image = "include/laby/tiles_png/" + pof + ".png"
         file = open (image,'rb')
         image_lu = file.read()
-        Tiles.tile2Png[t]=(widgets.Image(value = image_lu, format='png', layout=widgets.Layout(display="flex",
-        margin="1" ,padding="0", width="50%"
+        Tiles.tile2Png[t]=(widgets.Image(value = image_lu, format='png', layout=widgets.Layout(display="inline-flex",
+        width="32",height="32",border="15px"
         )))
         Tiles.char2N[t.char]=t.name
         Tiles.char2Tile[t.char]=t
@@ -315,30 +322,3 @@ for t in Tiles.__dict__.keys() :
 
     
 
-#<<-- l = valeur de l'historique
-# def LabyrinthView(laby):
-#     carte = laby.board.plateau
-#     items=[]
-#     taille_ligne =0
-    
-#     for j in range (0,len(carte)):
-#         taille_ligne = len(carte[0])
-#         for i in range (0,len(carte[0])):
-#             if(j==laby.position.i and i==laby.position.j):
-#                 tuile= laby.dirToAnt()
-#             else:
-#                 tuile = l.board.get(position(j,i))
-            
-#             pof = tuile.name
-#             image = "include/laby/tiles_png/" + pof + ".png"
-#             file = open (image,'rb')
-#             image_lu = file.read()
-#             items.append(widgets.Image(value = image_lu, format='png', layout=widgets.Layout(display="flex",
-#             margin="1px", width="100%"
-#             )))
-#     display(widgets.GridBox(items,layout=widgets.Layout(grid_template_columns="repeat("+str(taille_ligne)+", 50px)")))
-
-
-
-    
-    

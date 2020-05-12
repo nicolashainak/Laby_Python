@@ -1,10 +1,8 @@
 from value_player_widget import *
 from laby_widget import * 
 
-##declare ton appli 
-
-
-
+#déclare une application par défaut
+path = "share/laby/levels/"
 laby = labyrinth("share/laby/levels/0.laby")
 view = View(laby)
 player=ValuePlayerWidget(view)
@@ -12,26 +10,26 @@ player=ValuePlayerWidget(view)
 
 
 
-
+#Créer notre Laby grace a la fonction Laby appeler depuis l'utilisateur.
+#Le string s attendu est uniquement le numéro ou nom précis du niveau.
 def Laby(s):
     global laby
     global view
     global player
-    laby = labyrinth(s)
+
+    laby = labyrinth(path+s+".laby")
     view = View(deepcopy(laby))
     player=ValuePlayerWidget(view)
     return player
 
     
 
+#Définition des fonctions pouvant être appelé par l'utilisateur.
 def debut():
     player.debut()
-
     
 def avance():
     player.avance()
-    
-    
     
 def droite():
     player.droite()
