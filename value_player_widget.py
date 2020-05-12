@@ -267,7 +267,6 @@ class PlayerView(VBox):
         self.player=player
         self.player.reset(self.player.view.value)
         def fctOut(slid_time):
-            self.opla=self.opla+1
             print(self.player.history[slid_time].message)
 
         out=widgets.interactive_output(fctOut,{"slid_time" :self.player.slider_time})
