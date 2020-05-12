@@ -19,3 +19,5 @@ et de pouvoir utiliser un historique.
 [Lien vers notre diaporama](presentation.ipynb)
 
 [Lien vers laby](Laby_final.ipynb)
+
+Notre Binder : [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nicolashainak/Laby_Python/master)
