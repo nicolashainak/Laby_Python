@@ -14,5 +14,5 @@ et de pouvoir utiliser un historique.
 
 # Notre Projet
 
-[Lien vers notre rapport](rapport.ipynb
+[Lien vers notre rapport](rapport.ipynb)
 [lien vers ]
