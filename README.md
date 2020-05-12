@@ -9,4 +9,4 @@ pour ce faire nous avons "traduit" le jeu de C++ à python puis nous avons cré�
 et de pouvoir utiliser un historique. 
 
 
-[Lien vers la page du cours](#https://gitlab.u-psud.fr/nicolas.thiery/ter-jupyter)
+[Lien vers la page du cours](https://gitlab.u-psud.fr/nicolas.thiery/ter-jupyter)
