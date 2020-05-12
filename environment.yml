@@ -9,6 +9,8 @@ dependencies:
 - pip
 - matplotlib
 - ipywidgets
+- rise
+
 - pip:
     
 

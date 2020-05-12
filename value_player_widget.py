@@ -262,7 +262,6 @@ class PlayerView(VBox):
 
         
         #link((self.slider_time,'value'),(self.player,'time'))
-        self.opla=0
         #self.widget_affichage=VBox([self.player.view,self.slider_time,self.affichage])
         #self.player.time=0
         self.player=player
@@ -270,8 +269,7 @@ class PlayerView(VBox):
         def fctOut(slid_time):
             self.opla=self.opla+1
             print(self.player.history[slid_time].message)
-            print("caca")
-            print(self.opla)
+
         out=widgets.interactive_output(fctOut,{"slid_time" :self.player.slider_time})
         
         self.affichage=ipywidgets.HBox([fast_backward,backward,step_backward,pause,step_forward,play,fast_forward,self.player.slider_time,slider])
