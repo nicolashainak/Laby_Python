@@ -15,4 +15,7 @@ et de pouvoir utiliser un historique.
 # Notre Projet
 
 [Lien vers notre rapport](rapport.ipynb)
-[lien vers ]
+
+[Lien vers notre diaporama](presentation.ipynb)
+
+[Lien vers laby](Laby_final.ipynb)
