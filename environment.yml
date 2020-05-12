@@ -9,7 +9,6 @@ dependencies:
 - pip
 - matplotlib
 - ipywidgets
-- IPython.display
 - pip:
     
 
