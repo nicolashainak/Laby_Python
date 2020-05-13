@@ -23,7 +23,7 @@ def Laby(s):
     return player
 
     
-
+Exit=Tile(name="exit",char="x")
 #Définition des fonctions pouvant être appelées par l'utilisateur.
 def debut():
     player.debut()
