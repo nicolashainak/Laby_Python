@@ -10,7 +10,7 @@ player=ValuePlayerWidget(view)
 
 
 
-#Créer notre Laby grace a la fonction Laby appeler depuis l'utilisateur.
+#Créer notre Laby grace a la fonction Laby appelée depuis l'utilisateur.
 #Le string s attendu est uniquement le numéro ou nom précis du niveau.
 def Laby(s):
     global laby
@@ -24,7 +24,7 @@ def Laby(s):
 
     
 
-#Définition des fonctions pouvant être appelé par l'utilisateur.
+#Définition des fonctions pouvant être appelées par l'utilisateur.
 def debut():
     player.debut()
     

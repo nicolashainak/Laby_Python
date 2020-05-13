@@ -36,7 +36,7 @@ class Player(HasTraits) :
         def get_value(self):
             return self.history[len(self.history)-1]
         
-        #Ajoute une valeur a l'historique
+        #Ajoute une valeur à l'historique
         def set_value(self,value): 
             if (len(self.history) > 1000):
                 raise RuntimeError("Votre programme a pris plus de 1000 étapes")
@@ -60,12 +60,12 @@ class Player(HasTraits) :
                 self.slider_time.max=len(self.history)-1
                 self.update()
         
-        #Ce déplace à la première valeur de l'historique 
+        #Se déplace à la première valeur de l'historique 
         def begin(self):
             self.time=0
             self.update()
         
-        #Ce déplace à la dernière valeur de l'historique 
+        #Se déplace à la dernière valeur de l'historique 
         def end(self):
             self.time= len(self.history)-1  
             self.update()
@@ -105,7 +105,7 @@ class Player(HasTraits) :
             if(self.play_direction != None):
                 self.timer.set_fps(fps)
         
-        #return si l'on a gagné
+        #renvoie si l'on a gagné
         def won(self):
             return self.history[len(self.history)-1].won()
         
@@ -124,7 +124,7 @@ class Player(HasTraits) :
             self.time=0
            
             
-            #créer le sldier de temps
+            #créer le slider de temps
             self.slider_time=ipywidgets.IntSlider(
                 value=self.time,
                 min=0,
@@ -149,8 +149,8 @@ class Player(HasTraits) :
 
 class PlayerView(VBox):
 
-    #l'ensemble des méthodes suivante (avant le constructeur )sont appeler par global_fr et par l'utilisateur et 
-    # appel les méthodes correspondantes de notre modèle mais sur une copie a chaque fois afin d'avoir des valeur diffèrente dans l'historique
+    #l'ensemble des méthodes suivantes (avant le constructeur )sont appelées par global_fr et par l'utilisateur et 
+    # appelle les méthodes correspondantes de notre modèle mais sur une copie a chaque fois afin d'avoir des valeur diffèrente dans l'historique
     def set_value(self,value):
         self.player.set_value(value)
     
@@ -248,12 +248,12 @@ class PlayerView(VBox):
         step=1,
             description="Speed:"
         )
-        #observe le changeemnt du slider vitesse et appel set_fps
+        #observe le changement du slider vitesse et appel set_fps
         def on_value_change(change):
             value=int (change['new'])
             self.player.set_fps(2**value)
         
-        #création des boutons du widgets et liaisons des méthodes et des boutons
+        #création des boutons du widget et liaison des méthodes et des boutons
         slider.observe(on_value_change, names='value')
 
         play= ipywidgets.Button(description="",icon='fa-play',layout=Layout(width='35px'))
@@ -307,7 +307,7 @@ class View (GridBox):
     def set_value(self,value):
         self.value=value
 
-    #mets a jour notre affichage
+    #met à jour notre affichage
     def update(self):
         
         laby=self.value
@@ -324,7 +324,7 @@ class View (GridBox):
                 self.items[j*self.taille_ligne+i].value=deepcopy(Tiles.tile2Png[tuile].value)
                 
                 
-    #renvoie une nouvelle image a partir d'une tuile donné 
+    #renvoie une nouvelle image a partir d'une tuile donnée 
     def toImg(self,tuile):
         pof = tuile.name
         image = "include/laby/tiles_png/" + pof + ".png"
@@ -352,7 +352,7 @@ class View (GridBox):
                 
         self.children=self.items
 
-#fonction qui renvoi un widget en donnant la visualisation 
+#fonction qui renvoie un widget en donnant la visualisation 
 def ValuePlayerWidget(visualisation):
     player=Player(visualisation)
     app=PlayerView(player) 

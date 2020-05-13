@@ -25,7 +25,7 @@ class position :
     
 
 
-#class direction qui permet facielemtn de faire tourner la fourmi
+#class direction qui permet facilement de faire tourner la fourmi
 direction = { "0":[-1,0], # North  
                "1":[0,1], #East
                "2":[1,0],  #South
@@ -33,7 +33,7 @@ direction = { "0":[-1,0], # North
 
         
 #class board 
-#définit le tableau de jeu, est un tableau de tuile
+#définit le tableau de jeu, c'est un tableau de tuile
 class  Board: 
     
     #constructeur
@@ -53,7 +53,7 @@ class  Board:
              print('erreur !!')   
         self.plateau[position.i][position.j]=tuile       
 
-#remplis un tableau avec le board, la direction de la fourmi et sa position
+#remplit un tableau avec le board, la direction de la fourmi et sa position
 def charger(nom_niveau):
     fichier = open(nom_niveau, 'r+')
     tab = []
@@ -119,7 +119,7 @@ class labyrinth:
             view.plateau[self.position.i][self.position.j] = self.dirToAnt()
         return view
     
-    #les 3 méthodes suivantes non pas été implémenter mais pourrait l'être pour un programme plus complet
+    #les 3 méthodes suivantes non pas été implémentées mais pourrait l'être pour un programme plus complet
     def to_string(self):
         pass
 
